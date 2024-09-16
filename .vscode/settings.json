@@ -1,0 +1,14 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#442333",
+        "titleBar.activeBackground": "#603148",
+        "titleBar.activeForeground": "#FCF9FB"
+    },
+    "files.associations": {
+        "iosfwd": "cpp",
+        "iterator": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp"
+    }
+}
