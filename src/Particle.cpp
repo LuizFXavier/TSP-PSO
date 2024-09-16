@@ -1,12 +1,13 @@
 #include <utility>
 #include <iostream>
+#include <unordered_map>
 #include "Particle.hpp"
 
 Velocity Particle::operator-(Particle &p1)
 {
     Velocity v;
 
-    vector<int> positions(p1.solucao_atual.size());
+    unordered_map<int, int> positions(p1.solucao_atual.size());
 
     vector<int> caminho_aux = p1.solucao_atual;
 
@@ -21,7 +22,7 @@ Velocity Particle::operator-(Particle &p1)
         int t = this->solucao_atual[i];
 
         if(t != caminho_aux[i]){
-            int k = positions[t];
+            int k = positions[caminho_aux[i]];
 
             v.value.push_back(pair(i, k));
             int temp = caminho_aux[i];
