@@ -1,3 +1,0 @@
-/mnt/d/Projetos/LSCAD/tsp_pso/CMakeFiles/tsp_pso.dir
-/mnt/d/Projetos/LSCAD/tsp_pso/CMakeFiles/edit_cache.dir
-/mnt/d/Projetos/LSCAD/tsp_pso/CMakeFiles/rebuild_cache.dir

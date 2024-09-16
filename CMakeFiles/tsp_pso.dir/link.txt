@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/tsp_pso.dir/src/Particle.cpp.o CMakeFiles/tsp_pso.dir/src/Velocity.cpp.o CMakeFiles/tsp_pso.dir/src/Cidade.cpp.o CMakeFiles/tsp_pso.dir/src/main.cpp.o -o tsp_pso 
