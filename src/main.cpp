@@ -7,7 +7,7 @@ int main(){
     
     Particle p1, p2;
 
-    p1.solucao_atual = {0,2,1,3};
+    p1.solucao_atual = {0,1,2,3};
     p2.solucao_atual = {2,1,3,0};
 
     Velocity v = p1 - p2;

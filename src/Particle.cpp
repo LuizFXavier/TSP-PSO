@@ -17,17 +17,23 @@ Velocity Particle::operator-(Particle &p1)
         positions[this->solucao_atual[i]] = i;
         cout << this->solucao_atual[i] << " : " << i<< endl;
     }
-
+    for(int l = 0; l < p1.solucao_atual.size(); l++)
+                cout << caminho_aux[l] << ", ";
+    cout<< endl;
     for(int i = 0; i < p1.solucao_atual.size(); i++){
         int t = this->solucao_atual[i];
 
-        if(t != caminho_aux[i]){
+        while(t != caminho_aux[i]){
             int k = positions[caminho_aux[i]];
 
             v.value.push_back(pair(i, k));
             int temp = caminho_aux[i];
-            caminho_aux[i] = t;
+            caminho_aux[i] = caminho_aux[k];
             caminho_aux[k] = temp;
+            
+            for(int l = 0; l < p1.solucao_atual.size(); l++)
+                cout << caminho_aux[l] << ", ";
+            cout<< endl;
         }
     }
 
