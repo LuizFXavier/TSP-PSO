@@ -1,17 +1,33 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "Cidade.hpp"
+#include "Particle.hpp"
+#define INFINITO 0xfffffff
+
+using namespace std;
 class PSO
 {
 private:
-    double calcula_caminho(std::vector<int> caminho);
+    double calcula_caminho(vector<int> caminho); //Fitness function
     double calcula_distancia(Cidade &a, Cidade &b);
-
+    void first_iter();
+    void main_loop();
     int nCidades;
+    vector<Cidade> cidades;
 
-    std::vector<std::vector<double>> distancias;
+    int c1 = 1;
+    int c2 = 1;
+    int nRep = 10;
+
+    Particle* g_best;
+    double best_dist = INFINITO;
+
+    vector<std::vector<double>> distancias;
 
 public:
-    PSO(int n, std::vector<Cidade> &cidades);
-    
+    int nParticulas;
+    vector<Particle> particulas;
+    PSO(string cities_file);
+    void executar(string routes_file);
 };
