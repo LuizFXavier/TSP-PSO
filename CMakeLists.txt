@@ -6,7 +6,7 @@ add_executable(tsp_pso
     src/Particle.cpp
     src/Velocity.cpp
     src/Cidade.cpp
-    
+    src/PSO.cpp
     src/main.cpp
 )
 
