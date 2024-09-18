@@ -11,9 +11,7 @@ class PSO
 private:
     double calcula_caminho(vector<int> caminho); //Fitness function
     double calcula_distancia(Cidade &a, Cidade &b);
-    void first_iter();
     void main_loop();
-    int nCidades;
     vector<Cidade> cidades;
 
     int c1 = 1;
@@ -26,8 +24,11 @@ private:
     vector<std::vector<double>> distancias;
 
 public:
+    int nCidades;
     int nParticulas;
     vector<Particle> particulas;
     PSO(string cities_file);
     void executar(string routes_file);
+
+    Particle get_best();
 };
