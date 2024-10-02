@@ -9,26 +9,31 @@ using namespace std;
 class PSO
 {
 private:
-    double calcula_caminho(vector<int> caminho); //Fitness function
     double calcula_distancia(Cidade &a, Cidade &b);
     void main_loop();
+    void gerar_particulas();
     vector<Cidade> cidades;
 
-    int c1 = 1;
-    int c2 = 1;
-    int nRep = 10;
+    double c1 = 1;  //Coeficiente cognitivo
+    double c2 = 1;  //Coeficiente social
+    double w_max = 1; //Coeficiente de inércia máximo
+    double w_min = 0.2; //Coeficiente de inércia mínimo
+    int nRep = 2;  //Número de iterações a serem performadas
+    
 
-    Particle* g_best;
+    Particle best_particle;
     double best_dist = INFINITO;
 
     vector<std::vector<double>> distancias;
 
 public:
+    double calcula_caminho(vector<int> caminho); //Fitness function
     int nCidades;
-    int nParticulas;
+    int nParticulas = 5;
     vector<Particle> particulas;
     PSO(string cities_file);
     void executar(string routes_file);
+    void executar();
 
     Particle get_best();
 };
