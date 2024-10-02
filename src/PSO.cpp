@@ -1,11 +1,16 @@
 #include <fstream>
 #include <cmath>
 #include <iostream>
+#include <cstdlib>
+#include <time.h>
+#include <algorithm>
+#include <random>
 #include "Cidade.hpp"
 #include "PSO.hpp"
 
 PSO::PSO(string cities_file)
 {
+    srand(time(0)); //Seed para geração de números aleatórios posteriormente.
     ifstream c_file(cities_file);
 
     c_file >> nCidades;
@@ -38,6 +43,7 @@ PSO::PSO(string cities_file)
         }
         distancias[i] = c;
     }
+    this->best_particle.best_dist = INFINITO;
 }
 
 void PSO::executar(string routes_file)
@@ -67,73 +73,88 @@ void PSO::executar(string routes_file)
 
 }
 
+
+void PSO::executar()
+{
+    gerar_particulas();
+    main_loop();
+}
+int random_number (int i) { return rand()%i;}
+
+void PSO::gerar_particulas()
+{
+    vector<int> rota(nCidades + 1);
+    for(int i = 1; i <= nCidades; i++){
+        rota[i-1] = i;
+    }
+    rota[nCidades] = rota[0];
+    
+    
+    for(int i = 0; i < nParticulas; i++){
+        random_shuffle(rota.begin(), rota.end() - 1, random_number);
+        
+        rota[nCidades] = rota[0];
+        
+        this->particulas.push_back(Particle(rota));
+    }
+}
+
 Particle PSO::get_best()
 {
-    return *g_best;
+    return this->best_particle;
 }
 
 void PSO::main_loop()
 {   
     double f_value; //Resultado da função fitness
+    double g_best_value; // Melhor resultado fitness da iteração
+    Particle *g_best; // Melhor partícula da iteração
 
     for(int i = 0; i < nRep; i++){
-        cout << "Rep " << i <<": \n";
-        this->best_dist = INFINITO;
+        g_best_value = INFINITO;
         int t = 0;
         for(Particle& p: particulas){
-
+            
             f_value = calcula_caminho(p.solucao_atual);
             
+            // Atualiza o p_best da partícula i
             if(f_value < p.best_dist){
                 p.best_dist = f_value;    
                 p.p_best = p.solucao_atual;
             }
-            if(f_value < best_dist){
-                best_dist = f_value;
+            // Atualiza o novo possível melhor global
+            if(f_value < g_best_value){
+                g_best_value = f_value;
                 g_best = &p;
             }
-            
-
-            cout<<"Particula "<< t << ":\natual: ";
-            for(int i = 0; i <= nCidades; i++)
-                cout<< p.solucao_atual[i] << " ";
-            
-            cout<< ", " <<f_value <<"\np_best: ";
-            for(int i = 0; i <= nCidades; i++)
-                cout<< p.p_best[i] << " ";
-            cout<< ", " << p.best_dist << endl;
-            t++;
         }
-        cout<<"G_best: ";
-        for(int i = 0; i < g_best->solucao_atual.size(); i++)
-            cout<<g_best->solucao_atual[i] << " ";
-        cout<<", " << g_best->best_dist << endl << endl;
-        t = 0;
+        // Atualiza o melhor resultado de todas as iterações
+        if(g_best_value < this->best_particle.best_dist){
+            this->best_particle = *g_best;
+        }
+        
         for(Particle& p: particulas){
-            cout<<"Particula "<< t << ":\n";
+            
             Particle p_best(p.p_best);
-            cout << "\nAntes de calcular a velocidade\n";
             
-            Velocity pb = (p_best - p);
-            cout << "pb = ";
-            for(int w = 0; w < pb.value.size(); w++)
-                cout << "(" << pb.value[w].first << ", " << pb.value[w].second << ") ";
+            double r1 = static_cast<double>(rand()) / RAND_MAX;
+            double r2 = static_cast<double>(rand()) / RAND_MAX;
+            
+            double w = w_max - (w_max - w_min)/nRep * i;
 
-            Velocity gb = (*g_best - p);
-            cout << "\ngb = ";
-            for(int w = 0; w < gb.value.size(); w++)
-                cout << "(" << gb.value[w].first << ", " << gb.value[w].second << ") ";
-            
-            Velocity v = (p_best - p) * 0.5 + (*g_best - p) * 0.5;
-            cout << "\nv = ";
-            for(int w = 0; w < v.value.size(); w++)
-                cout << "(" << v.value[w].first << ", " << v.value[w].second << ") ";
-            
-            cout << "\nAntes de aplicar a velocidade\n";
+            cout<<"Antiga: ";
+            for(int j = 0; j < p.velocity.value.size(); j++)
+                cout << "("<< p.velocity.value[j].first << ", " << p.velocity.value[j].second << ") ";
+
+            Velocity v = p.velocity * w + (p_best - p) * c1 * r1  + (*g_best - p) * c2 * r2;
+            p.velocity = v;
+            cout <<endl<<"Nova: ";
+            for(int j = 0; j < p.velocity.value.size(); j++)
+                cout << "("<< p.velocity.value[j].first << ", " << p.velocity.value[j].second << ") ";
+            cout << endl << endl;
             p.aplicar_velocidade(v);
-            t++;
         }
-        cout<<"\n---------------------------------\n";
+        
     }
 
 
