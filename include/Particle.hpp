@@ -14,6 +14,7 @@ public:
     std::vector<int> solucao_atual;
     Velocity velocity;
 
+    Particle(){};
     Particle(vector<int> solution);
     Velocity operator-(Particle &p1);
     void aplicar_velocidade(Velocity &v);
