@@ -96,7 +96,20 @@ void PSO::gerar_particulas()
         rota[nCidades] = rota[0];
         
         this->particulas.push_back(Particle(rota));
+        shift_rota(this->particulas[i]);
     }
+}
+
+void PSO::shift_rota(Particle &p)
+{
+    while (p.solucao_atual[0] != 1)
+    {
+        for(int i = 0; i < nCidades; i++){
+            p.solucao_atual[i] = p.solucao_atual[i+1];
+        }
+        p.solucao_atual[nCidades] = p.solucao_atual[0];
+    }
+    
 }
 
 Particle PSO::get_best()
@@ -142,17 +155,11 @@ void PSO::main_loop()
             
             double w = w_max - (w_max - w_min)/nRep * i;
 
-            cout<<"Antiga: ";
-            for(int j = 0; j < p.velocity.value.size(); j++)
-                cout << "("<< p.velocity.value[j].first << ", " << p.velocity.value[j].second << ") ";
-
             Velocity v = p.velocity * w + (p_best - p) * c1 * r1  + (*g_best - p) * c2 * r2;
             p.velocity = v;
-            cout <<endl<<"Nova: ";
-            for(int j = 0; j < p.velocity.value.size(); j++)
-                cout << "("<< p.velocity.value[j].first << ", " << p.velocity.value[j].second << ") ";
-            cout << endl << endl;
+            
             p.aplicar_velocidade(v);
+            shift_rota(p);
         }
         
     }

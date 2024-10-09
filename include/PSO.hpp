@@ -18,8 +18,8 @@ private:
     double c2 = 1;  //Coeficiente social
     double w_max = 1; //Coeficiente de inércia máximo
     double w_min = 0.2; //Coeficiente de inércia mínimo
-    int nRep = 2;  //Número de iterações a serem performadas
-    
+    int nRep = 10;  //Número de iterações a serem performadas
+    void shift_rota(Particle &p);
 
     Particle best_particle;
     double best_dist = INFINITO;
