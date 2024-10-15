@@ -12,7 +12,6 @@ private:
     double calcula_distancia(Cidade &a, Cidade &b);
     void main_loop();
     void gerar_particulas();
-    vector<Cidade> cidades;
 
     double c1 = 1;  //Coeficiente cognitivo
     double c2 = 1;  //Coeficiente social
@@ -27,6 +26,7 @@ private:
     vector<std::vector<double>> distancias;
 
 public:
+    vector<Cidade> cidades;
     double calcula_caminho(vector<int> caminho); //Fitness function
     int nCidades;
     int nParticulas = 5;

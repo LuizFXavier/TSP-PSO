@@ -1,5 +1,7 @@
 #include <iostream>
 #include "PSO.hpp"
+#include "Grafico.hpp"
+#include "Particle.hpp"
 using namespace std;
 
 int main(int argc, char * argv[]){
@@ -17,13 +19,17 @@ int main(int argc, char * argv[]){
         }
         cout << ": " << pso.calcula_caminho(pso.particulas[i].solucao_atual) << "\n";
     }
+    
+    Particle best = pso.get_best();
     cout<<"\n-------------------------------------\n";
     for(int i = 0; i <= pso.nCidades; i++)
-        cout << pso.get_best().solucao_atual[i]<< " ";
+        cout << best.solucao_atual[i]<< " ";
     
     cout << endl;
-    cout << pso.get_best().best_dist;
+    cout << best.best_dist;
     cout << endl;
+
+    Grafico::apresentar(pso.cidades, best);
 
     return EXIT_SUCCESS;
 }
